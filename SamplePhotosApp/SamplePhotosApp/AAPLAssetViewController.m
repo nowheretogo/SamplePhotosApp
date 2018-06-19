@@ -94,7 +94,16 @@ static NSString * const AdjustmentFormatIdentifier = @"com.example.apple-samplec
     
     // Download from cloud if necessary
     options.networkAccessAllowed = YES;
+    
+    /*
     options.progressHandler = ^(BOOL degraded, double progress, NSError *error, BOOL *stop) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.progressView.progress = progress;
+            self.progressView.hidden = (progress <= 0.0 || progress >= 1.0);
+        });
+    };
+     */
+    options.progressHandler = ^(double progress, NSError *error, BOOL *stop, NSDictionary *info) {
         dispatch_async(dispatch_get_main_queue(), ^{
             self.progressView.progress = progress;
             self.progressView.hidden = (progress <= 0.0 || progress >= 1.0);
@@ -204,7 +213,7 @@ static NSString * const AdjustmentFormatIdentifier = @"com.example.apple-samplec
         [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Revert", @"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
                 PHAssetChangeRequest *request = [PHAssetChangeRequest changeRequestForAsset:self.asset];
-                [request revertAssetToOriginal];
+                [request revertAssetContentToOriginal];
             } completionHandler:^(BOOL success, NSError *error) {
                 if (!success) {
                     NSLog(@"Error: %@", error);

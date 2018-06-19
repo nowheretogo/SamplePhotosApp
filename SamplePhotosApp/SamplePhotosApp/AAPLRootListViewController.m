@@ -51,7 +51,7 @@ static NSString * const CollectionSegue = @"showCollection";
         AAPLAssetGridViewController *assetGridViewController = segue.destinationViewController;
         // Fetch all assets, sorted by date created.
         PHFetchOptions *options = [[PHFetchOptions alloc] init];
-        options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"dateCreated" ascending:YES]];
+        options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES]];
         assetGridViewController.assetsFetchResults = [PHAsset fetchAssetsWithOptions:options];
         
     } else if ([segue.identifier isEqualToString:CollectionSegue]) {
